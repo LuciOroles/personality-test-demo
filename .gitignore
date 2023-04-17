@@ -2,3 +2,5 @@ node_modules/
 dist/
 build/
 !build/index.html
+notes.md
+.env

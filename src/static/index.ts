@@ -2,7 +2,7 @@ import  { Request, Response, NextFunction } from 'express';
 
 import fs from "fs";
 import path from 'path';
-import constatns from './constants';
+import constatns from '../constants';
 
 const { build } = constatns;
 
