@@ -2,6 +2,7 @@ import  { Request, Response } from 'express';
 import { getQuestion } from "../controller";
 export default async (req: Request, res: Response) => {
     console.log(req.session, req.sessionID);
+    // add validation
     const id = req.params.id;
     if (Number.isFinite(Number(id))) {
         try {

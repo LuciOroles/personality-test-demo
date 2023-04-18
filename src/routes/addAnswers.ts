@@ -1,9 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import { z } from 'zod';
 import { setUserAnwsers } from '../controller';
-import constants from '../constants'; 
-
-const { connectKey } = constants;
+import { getUserId } from './util';
 
 const validationSchema = z.object({
     data: z.array(z.object({
@@ -13,19 +11,20 @@ const validationSchema = z.object({
 });
 
 export default async (req: Request, res: Response, next: NextFunction) => {
-    console.log('add anwsers:', req.body, req.sessionID);
-    console.log('add anwsers:', req.cookies, ' cookie' );
 
     try {
         const validData = validationSchema.parse(req.body);
-        const userId =  req.cookies[connectKey] //req.sessionID;
+        const userId = getUserId(req); //req.sessionID;
         if (!userId) {
             throw Error('Invalid user!');
         }
         const result = await setUserAnwsers(userId, validData);
-        return res.json({
+        console.log(result, ' result of setting');
+
+        res.json({
             updated: true
         });
+
     } catch (error) {
         console.error('Not able to save anwser ', error);
         res.sendStatus(400).end('Invalid request!');

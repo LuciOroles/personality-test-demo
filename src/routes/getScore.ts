@@ -1,12 +1,10 @@
 import { Request, Response } from 'express';
 import { getData } from '../controller';
-import constants from '../constants';  
+import { getUserId } from './util';
 
 export default async (req: Request, res: Response) => {
     try {
-        console.log(req.headers['test'], 'testing only',  req.hostname, req.originalUrl);
-        // TOD: remove this from prodcode;
-        const userId = req.hostname === 'localhost' && req.headers['test'] ? req.headers['test'] : req.cookies[constants.connectKey];
+        const userId = getUserId(req);
         if (typeof userId === 'string') {
             const userData = await  getData(userId);
            return res.json(userData);

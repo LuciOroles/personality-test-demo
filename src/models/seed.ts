@@ -1,3 +1,4 @@
+import constants from "../constants";
 import { Question,QuestionAnswers, Answer } from "../types";
 import { quickDbInstance } from "./database";
 
@@ -6,9 +7,9 @@ async function seedTestUser() {
     for (const i of [1,2,3,4,5]) {
         answers.push({ code: i, answer: 1 })
     }
-    await  quickDbInstance.db?.set('test', {
+    await  quickDbInstance.db?.set(constants.test, {
         data: answers
-    })
+    });
 }
 
 async function seedQuestion() {
