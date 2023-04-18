@@ -1,5 +1,6 @@
 export default {
     PORT: 8000,
     build: 'build',
-    exceptEndpoints:  ['question', 'answers']
+    connectKey: 'connect.sid',
+    exceptEndpoints:  ['question', 'answers', 'score']
 }
