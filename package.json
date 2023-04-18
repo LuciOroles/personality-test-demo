@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "debug": "ts-node --inspect=0.0.0.0:9229 --no-deprecation src/index.ts",
-    "dev": "ts-node src/index.ts"
+    "dev": "ts-node src/index.ts",
+    "db:seed": "ts-node src/models/index.ts"
   },
   "keywords": [],
   "author": "",
@@ -20,6 +21,7 @@
   "dependencies": {
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
-    "express-session": "^1.17.3"
+    "express-session": "^1.17.3",
+    "quick.db": "^9.1.6"
   }
 }
