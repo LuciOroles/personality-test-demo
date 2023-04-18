@@ -18,10 +18,13 @@ export interface Question {
 }
 
 
-export interface Responses {
+export interface Answer {
     code: Question['code'],
     answer: QuestionAnswers['code']
 }
 
+export interface AnswersApi {
+    data: Answer[]
+}
 
 export { }

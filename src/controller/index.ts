@@ -1,4 +1,5 @@
 import { quickDbInstance } from "../models/database";
+import { AnswersApi } from "../types";
 
 export async function getData<T>(key: string): Promise<T | null> {
     try {
@@ -35,4 +36,8 @@ export async function setData<T>(key: string, value: T): Promise<T | null> {
 
 export async function getQuestion(questionNr: number) {
      return await getData(`q-${questionNr}`)
+}
+
+export async function setUserAnwsers(userId: string, anwsers: AnswersApi) {
+    return await setData(userId, anwsers);
 }
