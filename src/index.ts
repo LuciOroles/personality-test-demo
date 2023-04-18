@@ -4,6 +4,7 @@ import path from 'path';
 import staticFiles from './static';
 import session from 'express-session';
 import constatns from './constants';
+import cors from "cors";
 const cookieParser = require('cookie-parser');
 
 import seed from "./models/seed";
@@ -16,6 +17,10 @@ const { PORT, build, exceptEndpoints } = constatns;
 })();
 
 const app = express();
+
+app.use(cors({
+    origin: 'http://localhost:3000'
+}));
 
 app.use(cookieParser());
 app.use(express.json());

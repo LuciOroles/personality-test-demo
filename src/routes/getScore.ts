@@ -3,9 +3,10 @@ import { getData } from '../controller';
 import constants from '../constants';  
 
 export default async (req: Request, res: Response) => {
-
     try {
-        const userId = req.cookies[constants.connectKey];
+        console.log(req.headers['test'], 'testing only',  req.hostname, req.originalUrl);
+        // TOD: remove this from prodcode;
+        const userId = req.hostname === 'localhost' && req.headers['test'] ? req.headers['test'] : req.cookies[constants.connectKey];
         if (typeof userId === 'string') {
             const userData = await  getData(userId);
            return res.json(userData);
