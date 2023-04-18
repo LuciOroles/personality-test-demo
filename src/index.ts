@@ -5,7 +5,14 @@ import staticFiles from './static';
 import session from 'express-session';
 import constatns from './constants';
 
+import seed from "./models/seed";
+import { getQuestionRoute } from "./routes";
+
 const { PORT, build, exceptEndpoints } = constatns;
+
+(async () => {
+    await seed();
+})();
 
 const app = express();
 
@@ -18,12 +25,7 @@ app.use(session({
 app.use(express.static(path.resolve(`./${build}`)));
 
 app.get("*", staticFiles(exceptEndpoints));
-app.get('/get-data', (req: Request, res: Response) => {
-    const data = { message: 'This is some data from the server!' };
-    console.log(req.session, req.sessionID);
-    // might use session storage;
-    res.json(data);
-});
+app.get(`/question/:id`, getQuestionRoute );
 
 app.listen(PORT, () => {
     console.log(`App live :${PORT}`);

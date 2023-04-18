@@ -23,3 +23,4 @@ class QuickDbInstance {
 
 
 export const quickDbInstance = new QuickDbInstance('test');
+ 
