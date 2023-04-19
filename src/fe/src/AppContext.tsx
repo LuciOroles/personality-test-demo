@@ -18,10 +18,7 @@ export interface IDataProviderProps {
 
 export const AppContextProvider = ({ children }: IDataProviderProps) => {
   const [responses, setResponses] = useState<Map<number, number>>(new Map());
-  useEffect(() => {
-    console.log(responses);
-  }, [responses]);
-
+ 
   const value = {
     responses,
     setResponses,

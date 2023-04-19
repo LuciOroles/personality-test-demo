@@ -1,11 +1,11 @@
 import React from "react";
-import Questionaire from "./Questionaire";
+import Questionaire from "./routes/Questionaire";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { SWRConfig } from "swr";
 
-import Results from "./Results";
-import Intro from "./Intro";
-import Debugger from "./Debugger";
+import Results from "./routes/Results";
+import Intro from "./routes/Intro";
+ 
 import { AppContextProvider } from "./AppContext";
 
 function App() {
@@ -16,7 +16,6 @@ function App() {
         <Routes>
           <Route path="results" element={<Results />} />
           <Route path="questions" element={<Questionaire />} />
-          <Route path="debugger" element={<Debugger />} />
           <Route path="*" element={<Intro />} />
         </Routes>
       </BrowserRouter>

@@ -1,6 +1,6 @@
 import React from "react";
-import Page from "./UI/Page";
-import { useQueryResults } from "./hooks/useQueryResults";
+import Page from "../UI/Page";
+import { useQueryResults } from "../hooks/useQueryResults";
 import { Box, Button, Card, CardBody, CardFooter, Heading } from "@chakra-ui/react";
 import './results.css';
 

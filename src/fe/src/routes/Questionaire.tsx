@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import Page from "./UI/Page";
-import { useQueryResults } from "./hooks/useQueryResults";
+import Page from "../UI/Page";
+import { useQueryResults } from "../hooks/useQueryResults";
 import { Box, Button } from "@chakra-ui/react";
-import { Question } from "./types";
-import QuestionCmp from "./UI/QuestionCmp";
-import { useAppContext } from "./AppContext";
+
+import QuestionCmp from "../UI/QuestionCmp";
+import { useAppContext } from "../AppContext";
 
 const BASE = 1;
 const MAX_Q = 5;
