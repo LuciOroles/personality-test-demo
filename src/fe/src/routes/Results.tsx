@@ -1,22 +1,25 @@
 import React from "react";
 import Page from "../UI/Page";
 import { useQueryResults } from "../hooks/useQueryResults";
-import { Box, Button, Card, CardBody, CardFooter, Heading } from "@chakra-ui/react";
-import './results.css';
+import { Box, Card, CardBody, Heading } from "@chakra-ui/react";
+import { useSWRConfig } from "swr";
+import "./results.css";
+ 
 
 function Results() {
+  const { cache } = useSWRConfig();
   const { result, isValidating, error } = useQueryResults(
     "http://localhost:8000/score",
     {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        test: "test",
+        test: cache.get("user-id"),
       },
     }
   );
 
-  let pageContent;
+  let pageContent = <React.Fragment></React.Fragment>;
 
   if (error) {
     pageContent = (
@@ -32,37 +35,36 @@ function Results() {
         Loading ...
       </Box>
     );
-  }
-
-  return (
-    <Page>
+  } 
+  
+  if (result) {
+    pageContent = (
       <Card>
         <CardBody>
-        <Heading as='h4' size='md'>
-           Results
-        </Heading>
+          <Heading as="h4" size="md">
+            Results
+          </Heading>
         </CardBody>
-        {result && Object.entries(result).map((values, idx) => {
-          const total = values[1] as string;
-          const precent =  Math.round((Number(total)/5)*100)
-          return (
-            <div className="score-line" key={idx}>
-              <div className="label">
-                {values[0]}:  { total}
+        {result &&
+          Object.entries(result).map((values, idx) => {
+            const total = values[1] as string;
+            const precent = Math.round((Number(total) / 5) * 100);
+            return (
+              <div className="score-line" key={idx}>
+                <div className="label">
+                  {values[0]}: {total}
+                </div>
+                <div className="progress">
+                  <div className="fill" style={{ width: `${precent}%` }}></div>
+                </div>
               </div>
-              <div className="progress">
-                <div className="fill" style={{width:  `${precent}%`}}></div>
-              
-              </div>
-            </div>
-          )
-        })}
-        <CardFooter>
-          <Button  bg="blue.400" > Retake the test </Button>
-        </CardFooter>
+            );
+          })}
       </Card>
-    </Page>
-  );
+    );
+  }
+
+  return <Page>{pageContent}</Page>;
 }
 
 export default Results;

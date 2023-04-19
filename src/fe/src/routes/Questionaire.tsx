@@ -1,11 +1,15 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import {   useNavigate } from "react-router-dom";
+import { useSWRConfig } from "swr";
+
 import Page from "../UI/Page";
 import { useQueryResults } from "../hooks/useQueryResults";
-import { Box, Button } from "@chakra-ui/react";
+import { Box, Button  } from "@chakra-ui/react";
 
 import QuestionCmp from "../UI/QuestionCmp";
 import { useAppContext } from "../AppContext";
+import { Answer } from "../types";
+import ErrorModal from "../UI/ErrorModal";
 
 const BASE = 1;
 const MAX_Q = 5;
@@ -13,6 +17,10 @@ const MAX_Q = 5;
 function Questionaire() {
   const [question, setQuestion] = useState<number>(1);
   const { responses, setResponses } = useAppContext();
+  const [modalOpen, setModalOpen] = useState<boolean>(false);
+
+  const { cache } = useSWRConfig();
+  const navigate = useNavigate();
 
   function setQuestionNumber(step: number) {
     return () => {
@@ -23,12 +31,13 @@ function Questionaire() {
       }
     };
   }
-  const { isValidating, error, result: questionDef  } = useQueryResults(
-    `http://localhost:8000/question/${question}`
-  );
-  
-  const showNextBtn = responses.size !== MAX_Q && question <MAX_Q;
-   
+  const {
+    isValidating,
+    error,
+    result: questionDef,
+  } = useQueryResults(`http://localhost:8000/question/${question}`);
+
+  const showResults = responses.size === MAX_Q && question === MAX_Q;
 
   const onAnswserChange = (index: number) => () => {
     setResponses(() => {
@@ -39,6 +48,39 @@ function Questionaire() {
       _result.set(question, index);
       return _result;
     });
+  };
+
+  const checkResults = async () => {
+    console.log(cache.get("user-id"), "usr id");
+    const userId = cache.get("user-id");
+    if (typeof userId === "string") {
+      const answers: Answer[] = [];
+      responses.forEach((val, key) => {
+        answers.push({
+          code: key,
+          answer: val,
+        });
+      });
+
+      try {
+        const r1 = await fetch("http://localhost:8000/answers", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            test: userId,
+          },
+          body: JSON.stringify({
+            data: answers,
+          }),
+        });
+  
+          await r1.json();
+        navigate("/results");
+      } catch (error) {
+        console.error(error);
+        setModalOpen(true);
+      }
+    }
   };
 
   let pageContent = <React.Fragment></React.Fragment>;
@@ -68,7 +110,7 @@ function Questionaire() {
     pageContent = (
       <div>
         <Box bg="tomato" w="100%" p={4} color="white">
-          Question
+         
           <i>
             {question}/{MAX_Q}
           </i>
@@ -84,17 +126,26 @@ function Questionaire() {
           >
             Back
           </Button>
-          { showNextBtn && (
-          <Button
-            bg="blue.400"
-            type="button"
-            onClick={setQuestionNumber(1)}
-            isDisabled={question === MAX_Q}
-          >
-            Next
-          </Button>
+          {!showResults && (
+            <Button
+              bg="blue.400"
+              type="button"
+              onClick={setQuestionNumber(1)}
+              isDisabled={question === MAX_Q}
+            >
+              Next
+            </Button>
           )}
-          {responses.size === MAX_Q && <Link to="/results">Results</Link>}
+          <ErrorModal 
+            isOpen={modalOpen} 
+            onModalClose={()=> setModalOpen(false)}
+            message="Error saving answers"
+          />
+          {showResults && (
+            <Button bg="blue.400" type="button" onClick={checkResults}>
+              Results
+            </Button>
+          )}
         </Box>
       </div>
     );

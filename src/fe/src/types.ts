@@ -1,10 +1,3 @@
-declare global {
-    namespace NodeJS {
-        interface ProcessEnv {
-            SESSION_SECRET: string;
-        }
-    }
-}
 
 export interface QuestionAnswers {
     code: number;
@@ -27,4 +20,4 @@ export interface AnswersApi {
     data: Answer[]
 }
 
-export { }
+ 
