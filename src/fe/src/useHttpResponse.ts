@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState } from "react";
 
 export const useHttpResponse = <T,>(
     input: RequestInfo | URL,
@@ -27,9 +27,8 @@ export const useHttpResponse = <T,>(
                     setLoading(true);
                 });
         }
-        if (input && !result)
-            getData();
-    }, [input])
+        getData();
+    }, [])
 
 
     return {

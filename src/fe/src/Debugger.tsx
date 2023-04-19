@@ -1,8 +1,9 @@
 import React, {  useState } from "react";
+import { Link } from "react-router-dom";
 
 function Debugger() {
 
-      const [userData, setUserData] = useState(null);
+  // const [userData, setUserData] = useState(null);
   const [questionNumber, setQuestion] = useState<number>(0);
 
 
@@ -69,6 +70,7 @@ function Debugger() {
           <button type="button" onClick={addAnswers}>
             Add Anwsers
           </button>
+          <Link to="/questions"> Questions </Link>
         </div>
         <div>
           {questionNumber > -1 && (

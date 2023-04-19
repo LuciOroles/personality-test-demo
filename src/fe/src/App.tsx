@@ -1,4 +1,4 @@
-import React, {  useState } from "react";
+import React from "react";
 import Questions from "./Questions";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Results from "./Results";
