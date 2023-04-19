@@ -5,7 +5,7 @@ import { quickDbInstance } from "./database";
 async function seedTestUser() {
     const answers: Answer[] = [];
     for (const i of [1,2,3,4,5]) {
-        answers.push({ code: i, answer: 1 })
+        answers.push({ code: i, answer: Math.round(Math.random()*5) })
     }
     await  quickDbInstance.db?.set(constants.test, {
         data: answers

@@ -1,0 +1,18 @@
+.score-line {
+    display: flex;
+}
+
+.score-line > .progress {
+    display: flex;
+    flex: 1;
+    margin: 0.2em;
+}
+
+.score-line > .progress > .fill {
+    display: flex;
+    background-color: #4299e1;
+}
+
+.score-line > .label {
+    width: 10em;
+}

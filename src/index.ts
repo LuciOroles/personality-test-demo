@@ -8,7 +8,7 @@ import cors from "cors";
 const cookieParser = require('cookie-parser');
 
 import seed from "./models/seed";
-import { getQuestionRoute, addAnswersRoute, getScore } from "./routes";
+import { getQuestionRoute, addAnswersRoute, getResults } from "./routes";
 
 const { PORT, build, exceptEndpoints } = constatns;
 
@@ -35,7 +35,7 @@ app.use(express.static(path.resolve(`./${build}`)));
 app.get("*", staticFiles(exceptEndpoints));
 app.get('/question/:id', getQuestionRoute );
 app.post('/answers', addAnswersRoute);
-app.get('/score', getScore );
+app.get('/score', getResults );
 
 
 app.listen(PORT, () => {

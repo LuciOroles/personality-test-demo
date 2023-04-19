@@ -10,35 +10,35 @@ import { useAppContext } from "./AppContext";
 const BASE = 1;
 const MAX_Q = 5;
 
-
 function Questionaire() {
   const [question, setQuestion] = useState<number>(1);
-  const { responses, setResponses} = useAppContext();
+  const { responses, setResponses } = useAppContext();
 
   function setQuestionNumber(step: number) {
     return () => {
-         if ((question < MAX_Q && step > 0) || (question > BASE && step < 0)) {
+      if ((question < MAX_Q && step > 0) || (question > BASE && step < 0)) {
         setQuestion(question + step);
       } else {
         setQuestion(BASE);
       }
     };
   }
-  const { isValidating, error, result } = useQueryResults(
+  const { isValidating, error, result: questionDef  } = useQueryResults(
     `http://localhost:8000/question/${question}`
   );
+  
+  const showNextBtn = responses.size !== MAX_Q && question <MAX_Q;
+   
 
-  const questionDef: Question = result;
-
-  const onAnswserChange =  (index: number) => () => {
-      setResponses(() => {
-        const _result = new Map();
-        responses.forEach((val, key)=> {
-          _result.set(key,val);
-        })
-        _result.set(question, index);  
-        return _result;
+  const onAnswserChange = (index: number) => () => {
+    setResponses(() => {
+      const _result = new Map();
+      responses.forEach((val, key) => {
+        _result.set(key, val);
       });
+      _result.set(question, index);
+      return _result;
+    });
   };
 
   let pageContent = <React.Fragment></React.Fragment>;
@@ -58,13 +58,13 @@ function Questionaire() {
     );
   }
 
-  if (result === null) {
+  if (questionDef === null) {
     pageContent = (
       <Box bg="red" color="white">
         No data
       </Box>
     );
-  } else if (result) {
+  } else if (questionDef) {
     pageContent = (
       <div>
         <Box bg="tomato" w="100%" p={4} color="white">
@@ -72,13 +72,8 @@ function Questionaire() {
           <i>
             {question}/{MAX_Q}
           </i>
-  
         </Box>
-        <QuestionCmp
-          questionData={questionDef}
-          onAnswer={onAnswserChange}
-         
-        />
+        <QuestionCmp questionData={questionDef} onAnswer={onAnswserChange} />
 
         <Box className="question-nav" marginTop="5">
           <Button
@@ -89,6 +84,7 @@ function Questionaire() {
           >
             Back
           </Button>
+          { showNextBtn && (
           <Button
             bg="blue.400"
             type="button"
@@ -97,11 +93,9 @@ function Questionaire() {
           >
             Next
           </Button>
+          )}
+          {responses.size === MAX_Q && <Link to="/results">Results</Link>}
         </Box>
-
-        <div>
-          <Link to="/results">Results</Link>
-        </div>
       </div>
     );
   }
