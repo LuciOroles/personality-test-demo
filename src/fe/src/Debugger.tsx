@@ -1,5 +1,6 @@
 import React, {  useState } from "react";
 import { Link } from "react-router-dom";
+import Page from "./UI/Page";
 
 function Debugger() {
 
@@ -61,8 +62,9 @@ function Debugger() {
     }
   }
   return (
-    <div>
-             <section>
+    <Page>
+   
+        <section>
         <div>
           <button type="button" onClick={getData}>
             Get Score
@@ -88,7 +90,8 @@ function Debugger() {
         </div>
      
       </section> 
-    </div>
+ 
+    </Page>
   )
 }
 

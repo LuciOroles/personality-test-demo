@@ -8,10 +8,6 @@ function App() {
 
 
   return (
-    <div>
-     
-      <header>Personality test</header>
-     
       <BrowserRouter>
           <Routes>
             <Route path="results" element={<Results />} />
@@ -19,8 +15,6 @@ function App() {
             <Route path="*" element={<Debugger />} />
           </Routes>
         </BrowserRouter>
-
-    </div>
   );
 }
 
