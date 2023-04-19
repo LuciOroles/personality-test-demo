@@ -1,0 +1,26 @@
+
+.answer {
+    border: 0.05em solid #444;
+    margin:  0.5em 0.1em;
+    padding: 0.25em 2em;
+    color: #555;
+    padding-right: 0;
+}
+
+.answer.selected {
+    background-color: #4299e1;
+    opacity: 0.9;
+}
+ 
+.answer:hover {
+    background-color: lightblue;
+}
+
+.answer>input {
+    display: none;
+}
+
+.answer>label {
+    width: 100%;
+    display: block;
+}
