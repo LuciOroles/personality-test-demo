@@ -1,19 +1,19 @@
 import React from "react";
-import { useSWRConfig } from 'swr';
-
-import { Box, Button, Heading, Image } from "@chakra-ui/react";
-import Page from "../UI/Page";
 import {  useNavigate } from "react-router-dom";
-import { USERID_KEY } from '../constatnts';
+import { Box, Button, Heading, Image } from "@chakra-ui/react";
+
+import Page from "../UI/Page";
+import { useAppContext } from "../AppContext";
 
 function Intro() {
-  const { cache } = useSWRConfig();
+  const { getUserKey, setUserKey } = useAppContext();
+    
   const navigate = useNavigate();
   function genNewKey() {
-    if (!cache.get(USERID_KEY)) {
+    if (!getUserKey()) {
       const newKey =(Math.random()*10000000).toString(16);
       console.log(newKey)
-      cache.set(USERID_KEY, newKey)
+      setUserKey(newKey)
     }
     navigate('/questions')
   }

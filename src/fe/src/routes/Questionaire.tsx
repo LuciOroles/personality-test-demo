@@ -1,7 +1,5 @@
 import React, { useState } from "react";
 import {   useNavigate } from "react-router-dom";
-import { useSWRConfig } from "swr";
-
 import Page from "../UI/Page";
 import { useQueryResults } from "../hooks/useQueryResults";
 import { Box, Button  } from "@chakra-ui/react";
@@ -10,17 +8,16 @@ import QuestionCmp from "../UI/QuestionCmp";
 import { useAppContext } from "../AppContext";
 import { Answer } from "../types";
 import ErrorModal from "../UI/ErrorModal";
-import { USERID_KEY, apiUrl } from '../constatnts';
+import { apiUrl } from '../constatnts';
 
 const BASE = 1;
 const MAX_Q = 5;
 
 function Questionaire() {
   const [question, setQuestion] = useState<number>(1);
-  const { responses, setResponses } = useAppContext();
+  const { getUserKey, responses, setResponses } = useAppContext();
   const [modalOpen, setModalOpen] = useState<boolean>(false);
 
-  const { cache } = useSWRConfig();
   const navigate = useNavigate();
 
   function setQuestionNumber(step: number) {
@@ -53,8 +50,9 @@ function Questionaire() {
 
   const checkResults = async () => {
  
-    const userId = cache.get(USERID_KEY);
-    if (typeof userId === "string") {
+    const userKey = getUserKey();
+
+    if (typeof userKey === "string") {
       const answers: Answer[] = [];
       responses.forEach((val, key) => {
         answers.push({
@@ -68,14 +66,15 @@ function Questionaire() {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            test: userId,
+            test: userKey,
           },
           body: JSON.stringify({
             data: answers,
           }),
         });
   
-          await r1.json();
+        await r1.json();
+        
         navigate("/results");
       } catch (error) {
         console.error(error);
