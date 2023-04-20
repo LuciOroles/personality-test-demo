@@ -4,9 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "debug": "ts-node --inspect=0.0.0.0:9229 --no-deprecation src/index.ts",
-    "dev": "ts-node src/index.ts",
-    "db:seed": "ts-node src/models/index.ts"
+    "dev": "ts-node src/index.ts"
   },
   "keywords": [],
   "author": "",
