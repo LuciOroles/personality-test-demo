@@ -23,8 +23,8 @@ export default async (req: Request, res: Response) => {
             }
 
            return res.json({
-            "Tier A": score.tierA,
-            "Tier B": score.tierB
+            "Introvert": score.tierA,
+            "Extrovert": score.tierB
            });
         } else {
             res.sendStatus(404).end("Not found!");

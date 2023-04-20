@@ -1,38 +1,12 @@
-import constants from "../constants";
-import { Question,QuestionAnswers, Answer } from "../types";
 import { quickDbInstance } from "./database";
-
-async function seedTestUser() {
-    const answers: Answer[] = [];
-    for (const i of [1,2,3,4,5]) {
-        answers.push({ code: i, answer: Math.round(Math.random()*5) })
-    }
-    await  quickDbInstance.db?.set(constants.test, {
-        data: answers
-    });
-}
+import dataSet from "./data.json"
 
 async function seedQuestion() {
-    for (const q of [1, 2, 3, 4, 5]) {
-        let que: Question = {
-            code: q,
-            label: `Question ${q}`,
-            answers: []
-        }
-        for (const a of [1, 2, 3, 4]) {
-            const ans: QuestionAnswers = {
-                code: a,
-                label: `${q} Answer ${a}`
-            }
-
-            que.answers.push(ans);
-        }
-
-        await quickDbInstance.db?.set(`q-${q}`, que);
+    for (const q of  dataSet.data) {
+        await quickDbInstance.db?.set(`q-${q.code}`, q);
     }
 }
 
 export default async function seed() {
-    await seedQuestion();
-    await seedTestUser();   
+    await seedQuestion();  
 }
