@@ -3,18 +3,18 @@ import Page from "../UI/Page";
 import { useQueryResults } from "../hooks/useQueryResults";
 import { Box, Card, CardBody, Heading } from "@chakra-ui/react";
 import { useSWRConfig } from "swr";
+import { apiUrl, USERID_KEY } from '../constatnts';
 import "./results.css";
  
-
 function Results() {
   const { cache } = useSWRConfig();
   const { result, isValidating, error } = useQueryResults(
-    "http://localhost:8000/score",
+    `${apiUrl}/score`,
     {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        test: cache.get("user-id"),
+        test: cache.get(USERID_KEY),
       },
     }
   );

@@ -10,6 +10,7 @@ import QuestionCmp from "../UI/QuestionCmp";
 import { useAppContext } from "../AppContext";
 import { Answer } from "../types";
 import ErrorModal from "../UI/ErrorModal";
+import { USERID_KEY, apiUrl } from '../constatnts';
 
 const BASE = 1;
 const MAX_Q = 5;
@@ -35,7 +36,7 @@ function Questionaire() {
     isValidating,
     error,
     result: questionDef,
-  } = useQueryResults(`http://localhost:8000/question/${question}`);
+  } = useQueryResults(`${apiUrl}/question/${question}`);
 
   const showResults = responses.size === MAX_Q && question === MAX_Q;
 
@@ -51,8 +52,8 @@ function Questionaire() {
   };
 
   const checkResults = async () => {
-    console.log(cache.get("user-id"), "usr id");
-    const userId = cache.get("user-id");
+ 
+    const userId = cache.get(USERID_KEY);
     if (typeof userId === "string") {
       const answers: Answer[] = [];
       responses.forEach((val, key) => {
@@ -63,7 +64,7 @@ function Questionaire() {
       });
 
       try {
-        const r1 = await fetch("http://localhost:8000/answers", {
+        const r1 = await fetch(`${apiUrl}/answers`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

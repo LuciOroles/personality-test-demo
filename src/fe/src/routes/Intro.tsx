@@ -4,15 +4,16 @@ import { useSWRConfig } from 'swr';
 import { Box, Button, Heading, Image } from "@chakra-ui/react";
 import Page from "../UI/Page";
 import {  useNavigate } from "react-router-dom";
+import { USERID_KEY } from '../constatnts';
 
 function Intro() {
   const { cache } = useSWRConfig();
   const navigate = useNavigate();
   function genNewKey() {
-    if (!cache.get('user-id')) {
+    if (!cache.get(USERID_KEY)) {
       const newKey =(Math.random()*10000000).toString(16);
       console.log(newKey)
-      cache.set('user-id', newKey)
+      cache.set(USERID_KEY, newKey)
     }
     navigate('/questions')
   }
