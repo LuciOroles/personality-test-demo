@@ -7,24 +7,23 @@ const validationSchema = z.object({
     data: z.array(z.object({
         code: z.number().gt(0).lte(5),
         answer: z.number().gt(0).lte(5)
-    }))
+    })).length(5)
 });
 
-export default async (req: Request, res: Response, next: NextFunction) => {
-
+export default async (req: Request, res: Response) => {
     try {
         const validData = validationSchema.parse(req.body);
-        const userId = getUserId(req); //req.sessionID;
+        const userId = getUserId(req); // for the moment expecting FE to send `test/header`
+      
         if (!userId) {
             throw Error('Invalid user!');
         }
-        const result = await setUserAnwsers(userId, validData);
-        console.log(result, ' result of setting');
-
+        
+        await setUserAnwsers(userId, validData);
+      
         res.json({
-            updated: true
+            saved: true
         });
-
     } catch (error) {
         console.error('Not able to save anwser ', error);
         res.sendStatus(400).end('Invalid request!');
