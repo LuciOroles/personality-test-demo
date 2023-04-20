@@ -8,14 +8,14 @@ import QuestionCmp from "../UI/QuestionCmp";
 import { useAppContext } from "../AppContext";
 import { Answer } from "../types";
 import ErrorModal from "../UI/ErrorModal";
-import { apiUrl } from '../constatnts';
+import { USERID_KEY, apiUrl } from '../constatnts';
 
 const BASE = 1;
 const MAX_Q = 5;
 
 function Questionaire() {
   const [question, setQuestion] = useState<number>(1);
-  const { getUserKey, responses, setResponses } = useAppContext();
+  const { getValueForKey, responses, setResponses } = useAppContext();
   const [modalOpen, setModalOpen] = useState<boolean>(false);
 
   const navigate = useNavigate();
@@ -50,7 +50,7 @@ function Questionaire() {
 
   const checkResults = async () => {
  
-    const userKey = getUserKey();
+    const userKey = getValueForKey(USERID_KEY);
 
     if (typeof userKey === "string") {
       const answers: Answer[] = [];
@@ -72,9 +72,12 @@ function Questionaire() {
             data: answers,
           }),
         });
-  
+
+        if (r1.status !== 200) {
+          throw Error(r1.statusText || 'API error')
+        }
         await r1.json();
-        
+
         navigate("/results");
       } catch (error) {
         console.error(error);
